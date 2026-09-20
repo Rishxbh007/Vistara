@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch — Vistara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=9">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="page-wrapper">
+    <main class="watch-page">
+      <div class="container">
+
+        <div class="loading-container" id="watch-loading">
+          <div class="spinner spinner-lg"></div>
+          <p>Loading video&hellip;</p>
+        </div>
+
+        <div class="hidden" id="watch-content">
+
+          <!-- ============ PLAYER ============ -->
+          <div class="video-player-container" id="player-container">
+
+            <!-- Main video. Note: it has NO src attribute. The source is only
+                 attached once the ad break is over, so the feature can never
+                 begin playing underneath an advertisement. -->
+            <video id="main-video" playsinline preload="none"></video>
+
+            <!-- Centre play/pause indicator -->
+            <div class="player-tap-hint" id="tap-hint">
+              <span>
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+              </span>
+            </div>
+
+            <!-- ============ AD OVERLAY ============
+                 Opaque black background on purpose: while an ad is on screen
+                 the main video is never visible behind it. -->
+            <div class="ad-overlay hidden" id="ad-overlay">
+              <video class="ad-video" id="ad-video" playsinline muted preload="auto"></video>
+
+              <!-- Loading / error state, shown above the ad video -->
+              <div class="ad-state" id="ad-state">
+                <div class="spinner spinner-lg spinner-light"></div>
+                <p>Loading advertisement&hellip;</p>
+              </div>
+
+              <div class="ad-bar">
+                <div class="ad-bar-info">
+                  <span class="ad-badge">Ad</span>
+                  <span class="ad-title" id="ad-title"></span>
+                </div>
+                <div class="ad-actions">
+                  <button class="ad-icon-btn" id="btn-ad-mute" aria-label="Unmute advertisement" title="Unmute">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                      <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                    </svg>
+                  </button>
+                  <button class="btn-skip-ad" id="btn-skip-ad" disabled>
+                    <span id="skip-label">Skip in 5s</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="ad-progress"><div class="ad-progress-fill" id="ad-progress-fill"></div></div>
+            </div>
+
+            <!-- ============ CUSTOM CONTROLS ============ -->
+            <div class="player-controls hidden" id="player-controls">
+              <div class="player-progress-container" id="progress-container">
+                <div class="player-progress-bar">
+                  <div class="player-progress-buffered" id="progress-buffered"></div>
+                  <div class="player-progress-played" id="progress-played"></div>
+                  <div class="player-progress-handle" id="progress-handle"></div>
+                </div>
+              </div>
+
+              <div class="player-controls-row">
+                <div class="player-controls-left">
+                  <button class="player-btn" id="btn-play" aria-label="Play">
+                    <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                    <svg id="icon-pause" class="hidden" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                  </button>
+
+                  <div class="player-volume-group">
+                    <button class="player-btn" id="btn-mute" aria-label="Mute">
+                      <svg id="icon-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+                      </svg>
+                      <svg id="icon-muted" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                      </svg>
+                    </button>
+                    <div class="player-volume-slider-wrap">
+                      <input type="range" class="player-volume-slider" id="volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+                    </div>
+                  </div>
+
+                  <span class="player-time" id="player-time">0:00 / 0:00</span>
+                </div>
+
+                <div class="player-controls-right">
+                  <div class="player-speed-group">
+                    <button class="player-btn player-speed-btn" id="btn-speed" aria-label="Playback speed">1x</button>
+                    <div class="player-speed-menu hidden" id="speed-menu">
+                      <button class="speed-option" data-speed="0.5">0.5x</button>
+                      <button class="speed-option" data-speed="0.75">0.75x</button>
+                      <button class="speed-option active" data-speed="1">Normal</button>
+                      <button class="speed-option" data-speed="1.25">1.25x</button>
+                      <button class="speed-option" data-speed="1.5">1.5x</button>
+                      <button class="speed-option" data-speed="2">2x</button>
+                    </div>
+                  </div>
+
+                  <button class="player-btn" id="btn-fullscreen" aria-label="Fullscreen">
+                    <svg id="icon-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/>
+                      <path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                    </svg>
+                    <svg id="icon-compress" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M16 3v3a2 2 0 0 0 2 2h3"/>
+                      <path d="M8 21v-3a2 2 0 0 0-2-2H3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============ DETAILS ============ -->
+          <div class="video-details mt-6">
+            <h1 id="video-title"></h1>
+
+            <div class="video-detail-meta">
+              <span class="category-badge" id="video-category"></span>
+              <span class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                <strong id="video-views">0</strong> views
+              </span>
+              <span class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                <strong id="video-uploader"></strong>
+              </span>
+              <span class="meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>
+                </svg>
+                <span id="video-date"></span>
+              </span>
+            </div>
+
+            <p class="video-description" id="video-description"></p>
+          </div>
+
+          <div style="height: var(--space-16)"></div>
+        </div>
+
+        <div class="empty-state hidden" id="watch-error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16.5" x2="12" y2="16.5"/>
+          </svg>
+          <h3>Video not found</h3>
+          <p id="watch-error-text">This video may have been deleted, or the link is incorrect.</p>
+          <a href="/browse.html" class="btn btn-primary">Browse other videos</a>
+        </div>
+
+      </div>
+    </main>
+
+    <div id="footer"></div>
+  </div>
+
+  <script src="/js/api.js?v=9"></script>
+  <script src="/js/auth.js?v=9"></script>
+  <script src="/js/watch.js?v=9"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vistara — Watch and share video</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=9">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="page-wrapper">
+    <main>
+      <!-- Immersive hero: the featured video plays muted + looping behind
+           designed headline copy. home.js fills #hero-stage. -->
+      <section class="stage-section">
+        <div class="stage reveal reveal-1" id="hero-stage">
+          <div class="stage-loading"><div class="spinner spinner-lg spinner-light"></div></div>
+        </div>
+      </section>
+
+      <!-- Horizontal, category-grouped rails (Latest, then one per category).
+           home.js builds these from the video list. -->
+      <div class="rails container" id="rails"></div>
+
+      <section class="container">
+        <div class="empty-state hidden" id="featured-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="3"/><polygon points="10 9 15 12 10 15"/>
+          </svg>
+          <h3>Nothing here yet</h3>
+          <p>No videos have been uploaded. Be the first to add one to the library.</p>
+          <a href="/upload.html" class="btn btn-primary">Upload a video</a>
+        </div>
+      </section>
+
+      <!-- Browse by category — visual tiles built from real categories.
+           home.js fills #category-tiles. Hidden until it has content. -->
+      <section class="cats-section container hidden" id="cats-section">
+        <div class="section-header">
+          <h2>Browse by category</h2>
+          <a href="/browse.html" class="link-quiet">See all videos</a>
+        </div>
+        <div class="cat-tiles" id="category-tiles"></div>
+      </section>
+    </main>
+
+    <div id="footer"></div>
+  </div>
+
+  <script src="/js/api.js?v=9"></script>
+  <script src="/js/auth.js?v=9"></script>
+  <script src="/js/home.js?v=9"></script>
+</body>
+</html>

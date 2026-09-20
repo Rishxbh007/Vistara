@@ -1,0 +1,27 @@
+{
+  "_comment": "Optional metadata for the ad videos in this folder. Every file in ads/ works WITHOUT an entry here — this file only lets you override the auto-generated title, add an advertiser name and click-through link, weight how often an ad is chosen, or temporarily disable one. Keys are filenames. See README.md.",
+
+  "ads": {
+    "vistara-premium.mp4": {
+      "title": "Vistara Premium — Stream without interruptions",
+      "advertiser": "Vistara",
+      "clickUrl": "",
+      "weight": 2,
+      "enabled": true
+    },
+    "cloudnine-hosting.mp4": {
+      "title": "CloudNine Hosting — Deploy your app in 60 seconds",
+      "advertiser": "CloudNine",
+      "clickUrl": "",
+      "weight": 1,
+      "enabled": true
+    },
+    "aperture-coffee.mp4": {
+      "title": "Aperture Coffee — Roasted the morning it ships",
+      "advertiser": "Aperture Coffee",
+      "clickUrl": "",
+      "weight": 1,
+      "enabled": true
+    }
+  }
+}

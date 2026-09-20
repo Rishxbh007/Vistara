@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your channel — Vistara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=9">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="page-wrapper">
+    <main class="profile-page">
+      <div class="container">
+
+        <div class="loading-container" id="profile-loading">
+          <div class="spinner spinner-lg"></div>
+          <p>Loading your channel&hellip;</p>
+        </div>
+
+        <div class="hidden" id="profile-content">
+          <div class="profile-header">
+            <div class="profile-avatar" id="profile-avatar"></div>
+            <div class="profile-info">
+              <h1 id="profile-name"></h1>
+              <p id="profile-email"></p>
+              <p class="profile-since" id="profile-since"></p>
+            </div>
+            <div class="profile-metrics">
+              <div class="metric">
+                <strong id="stat-videos">0</strong>
+                <span>Videos</span>
+              </div>
+              <div class="metric">
+                <strong id="stat-views">0</strong>
+                <span>Total views</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card" id="ads-setting">
+            <div class="settings-text">
+              <h3>Advertisements</h3>
+              <p id="ads-setting-desc">Play a short ad before each video starts.</p>
+            </div>
+            <button type="button" class="switch" id="ads-switch" role="switch" aria-checked="true" aria-label="Toggle advertisements">
+              <span class="switch-thumb"></span>
+            </button>
+          </div>
+
+          <div class="section-header">
+            <h2>Your videos</h2>
+            <a href="/upload.html" class="btn btn-primary btn-sm">Upload a video</a>
+          </div>
+
+          <div class="video-grid" id="my-videos-grid"></div>
+
+          <div class="empty-state hidden" id="no-videos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="3"/><polygon points="10 9 15 12 10 15"/>
+            </svg>
+            <h3>You haven't uploaded anything yet</h3>
+            <p>Your uploads will appear here, where you can watch or delete them.</p>
+            <a href="/upload.html" class="btn btn-primary">Upload your first video</a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <div id="footer"></div>
+  </div>
+
+  <!-- Delete confirmation -->
+  <div class="modal-backdrop hidden" id="delete-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="delete-title">
+      <h3 id="delete-title">Delete this video?</h3>
+      <p>The video file and its thumbnail will be removed from the server. This can't be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancel-delete">Cancel</button>
+        <button class="btn btn-danger" id="confirm-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js?v=9"></script>
+  <script src="/js/auth.js?v=9"></script>
+  <script src="/js/profile.js?v=9"></script>
+</body>
+</html>
